@@ -6,14 +6,14 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score
 from sklearn.preprocessing import LabelEncoder
 
-# Load dataset
+#Load dataset
 df = pd.read_csv("fraud_dataset_sample.csv")
 
-# Preprocessing
+#Preprocessing
 df.drop(['nameOrig', 'nameDest'], axis=1, inplace=True)
 df['type'] = LabelEncoder().fit_transform(df['type'])
 
-# EDA Plots
+#EDA Plots
 sns.heatmap(df.corr(numeric_only=True), annot=True, cmap='coolwarm')
 plt.title('Correlation Heatmap')
 plt.savefig('heatmap.png')
@@ -34,7 +34,7 @@ plt.title('Amount vs Fraud')
 plt.savefig('amount_by_fraud.png')
 plt.close()
 
-# Model Training
+#Model Training
 X = df.drop('isFraud', axis=1)
 y = df['isFraud']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -42,15 +42,16 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
-# Evaluation
+#Evaluation
 y_pred = model.predict(X_test)
 print(classification_report(y_test, y_pred))
 print(confusion_matrix(y_test, y_pred))
 print("ROC AUC Score:", roc_auc_score(y_test, y_pred))
 
-# Confusion Matrix Plot
+#Confusion Matrix Plot
 cm = confusion_matrix(y_test, y_pred)
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
 plt.title('Confusion Matrix')
 plt.savefig('confusion_matrix.png')
 plt.close()
+
